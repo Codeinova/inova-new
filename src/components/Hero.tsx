@@ -1,122 +1,131 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Play, Zap } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ArrowRight, Menu, X, Zap } from 'lucide-react';
 
 const Hero = () => {
-  return (
-    <section className="min-h-screen bg-white relative overflow-hidden">
-      {/* Subtle background elements */}
-      <div className="absolute inset-0">
-        <motion.div 
-          className="absolute top-20 left-10 w-96 h-96 bg-yellow-400 rounded-full mix-blend-multiply filter blur-xl opacity-10"
-          animate={{
-            x: [0, 50, 0],
-            y: [0, -30, 0],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-        />
-        <motion.div 
-          className="absolute bottom-20 right-10 w-80 h-80 bg-black rounded-full mix-blend-multiply filter blur-xl opacity-5"
-          animate={{
-            x: [0, -30, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-        />
-      </div>
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-      <div className="container mx-auto px-6 py-12 relative z-10">
+  const menuItems = [
+    'Inicio',
+    '¿Quiénes somos?',
+    'Qué hacemos',
+    'Cómo lo hacemos',
+    'Casos de éxito',
+    'Clientes'
+  ];
+  return (
+    <section className="min-h-screen bg-white">
+      <div className="container mx-auto px-6 py-6">
         <motion.nav 
-          className="flex justify-between items-center py-6"
+          className="flex justify-between items-center py-4 relative"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <div className="text-3xl font-bold text-black flex items-center gap-2">
-            <div className="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
-              <Zap className="w-6 h-6 text-black" />
+          {/* Logo */}
+          <div className="text-2xl md:text-3xl font-bold text-black flex items-center gap-2 z-20">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+              <Zap className="w-5 h-5 md:w-6 md:h-6 text-black" />
             </div>
             IN-OVA
           </div>
           
-          <div className="hidden md:flex space-x-8">
-            {['¿Quiénes somos?', 'Servicios', 'Metodología', 'Casos de éxito', 'Contacto'].map((item, index) => (
+          {/* Desktop Menu */}
+          <div className="hidden lg:flex space-x-8">
+            {menuItems.map((item, index) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
-                className="text-black hover:text-yellow-600 transition-colors duration-300 font-medium"
+                className="text-black hover:text-yellow-600 transition-colors duration-300 font-medium text-sm"
               >
                 {item}
               </a>
             ))}
           </div>
           
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2">
-            <span>Contactar</span>
-            <ArrowRight className="w-4 h-4" />
+          {/* Desktop CTA Button */}
+          <button className="hidden lg:flex bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded-lg font-medium text-sm transition-all duration-300">
+            Escríbenos más
           </button>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="lg:hidden z-20 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          >
+            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+
+          {/* Mobile Menu Overlay */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 bg-black/20 backdrop-blur-sm z-10 lg:hidden"
+                onClick={() => setIsMenuOpen(false)}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Mobile Menu Panel */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'tween', duration: 0.3 }}
+                className="fixed top-0 right-0 h-full w-[80%] max-w-sm bg-white shadow-xl z-10 lg:hidden"
+              >
+                <div className="flex flex-col h-full pt-20 pb-6 px-6">
+                  <div className="flex flex-col space-y-4">
+                    {menuItems.map((item, index) => (
+                      <a
+                        key={item}
+                        href={`#${item.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}
+                        className="text-black hover:text-yellow-600 transition-colors duration-300 font-medium text-lg py-2"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item}
+                      </a>
+                    ))}
+                  </div>
+                  <div className="mt-auto">
+                    <button 
+                      className="w-full bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-3 rounded-lg font-medium text-sm transition-all duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      Escríbenos más
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.nav>
 
-        <div className="flex flex-col lg:flex-row items-center min-h-[80vh] gap-16">
+        <div className="flex flex-col items-center min-h-[calc(100vh-5rem)] gap-8 pt-16">
           <motion.div 
-            className="lg:w-1/2 space-y-8"
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
+            className="text-center space-y-6 max-w-4xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <div className="inline-block">
-              <span className="bg-yellow-400 text-black px-4 py-2 rounded-full text-sm font-medium">
-                🌱 Desarrollo Rural Sostenible
-              </span>
-            </div>
-            
-            <h1 className="text-5xl lg:text-7xl font-bold text-black leading-tight">
-              Impulsamos el
-              <span className="text-yellow-500 block">
-                Desarrollo Rural
-              </span>
-              <span className="text-black">Sostenible</span>
+            <h1 className="text-4xl lg:text-6xl font-bold text-black leading-tight">
+              Impulsamos el desarrollo rural sostenible mediante la inteligencia colectiva
             </h1>
             
-            <p className="text-xl text-gray-700 leading-relaxed max-w-2xl">
-              Articulamos <strong>tecnología</strong>, <strong>talento humano</strong> y <strong>redes de aliados</strong> para 
-              acompañar organizaciones ancla y productores del campo en su transformación digital 
-              mediante la inteligencia colectiva.
+            <p className="text-lg text-gray-700 leading-relaxed max-w-3xl mx-auto">
+              Conectamos la tecnología, talento y aliados estratégicos para transformar el campo
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-black hover:bg-gray-800 text-white px-8 py-4 rounded-full font-semibold flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl">
-                <span>Conocer Ecosistema</span>
-                <ArrowRight className="w-5 h-5" />
+            <div className="flex justify-center">
+              <button className="bg-yellow-400 hover:bg-yellow-500 text-black px-8 py-3 rounded-lg font-medium text-sm transition-all duration-300">
+                Descubre más
               </button>
-              
-              <button className="border-2 border-black text-black hover:bg-black hover:text-white px-8 py-4 rounded-full font-semibold flex items-center gap-3 transition-all duration-300">
-                <Play className="w-5 h-5" />
-                <span>Ver Demo</span>
-              </button>
-            </div>
-
-            <div className="flex items-center gap-8 pt-8">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-black">98.3%</div>
-                <div className="text-sm text-gray-600">Precisión IA</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-black">408K+</div>
-                <div className="text-sm text-gray-600">Vacunaciones</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-black">40%</div>
-                <div className="text-sm text-gray-600">Tasa Respuesta</div>
-              </div>
             </div>
           </motion.div>
 

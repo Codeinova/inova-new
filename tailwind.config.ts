@@ -13,12 +13,21 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Montserrat', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        innova: {
+          yellow: "hsl(var(--innova-yellow))",
+          "yellow-light": "hsl(var(--innova-yellow-light))",
+          black: "hsl(var(--innova-black))",
+          gray: "hsl(var(--innova-gray))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

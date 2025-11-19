@@ -165,7 +165,7 @@ const AdminNovedades = () => {
                     {articles.map((article) => (
                       <TableRow key={article.id}>
                         <TableCell className="font-medium">
-                          {article.title}
+                          {article.titulo}
                         </TableCell>
                         <TableCell>
                           {article.category && (

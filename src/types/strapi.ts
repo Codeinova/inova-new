@@ -29,16 +29,19 @@ export interface StrapiCategory {
 export interface StrapiArticle {
   id: number;
   documentId: string;
-  title: string;
+  titulo: string;
+  title?: string; // Para compatibilidad
   description: string;
   slug: string;
-  featuredimage?: StrapiImage;
+  featuredImage?: StrapiImage;
+  featuredimage?: StrapiImage; // Para compatibilidad
   author?: StrapiAuthor;
   category?: StrapiCategory;
   blocks?: any[];
   content?: string;
   publishDate: string;
-  status?: string;
+  estatus?: 'draft' | 'published';
+  status?: string; // Para compatibilidad
   createdAt: string;
   updatedAt: string;
 }

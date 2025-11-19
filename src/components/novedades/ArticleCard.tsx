@@ -11,8 +11,8 @@ interface ArticleCardProps {
 }
 
 export const ArticleCard = ({ article }: ArticleCardProps) => {
-  const imageUrl = article.featuredimage?.url 
-    ? `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${article.featuredimage.url}` 
+  const imageUrl = (article.featuredImage || article.featuredimage)?.url 
+    ? `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${(article.featuredImage || article.featuredimage)?.url}` 
     : null;
 
   const publishDate = article.publishDate ? new Date(article.publishDate) : new Date(article.createdAt);
@@ -24,7 +24,7 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
           <div className="aspect-video overflow-hidden bg-muted">
             <img
               src={imageUrl}
-              alt={article.featuredimage?.alternativeText || article.title}
+              alt={(article.featuredImage || article.featuredimage)?.alternativeText || article.titulo}
               className="h-full w-full object-cover transition-transform group-hover:scale-110"
             />
           </div>
@@ -38,7 +38,7 @@ export const ArticleCard = ({ article }: ArticleCardProps) => {
           )}
           
           <h3 className="text-xl font-bold line-clamp-2 group-hover:text-primary transition-colors">
-            {article.title}
+            {article.titulo}
           </h3>
         </CardHeader>
 

@@ -24,13 +24,13 @@ const ArticleForm = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const [formData, setFormData] = useState({
-    title: '',
+    titulo: '',
     description: '',
     slug: '',
     content: '',
     category: '',
     publishDate: new Date().toISOString().split('T')[0],
-    status: 'published',
+    estatus: 'published',
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const ArticleForm = () => {
       const article = await strapiService.getArticleById(articleId);
       if (article) {
         setFormData({
-          title: article.title,
+          titulo: article.titulo,
           description: article.description,
           slug: article.slug,
           content: article.content || '',
@@ -62,12 +62,12 @@ const ArticleForm = () => {
           publishDate: article.publishDate
             ? new Date(article.publishDate).toISOString().split('T')[0]
             : new Date().toISOString().split('T')[0],
-          status: article.status || 'published',
+          estatus: article.estatus || 'published',
         });
 
-        if (article.featuredimage?.url) {
+        if ((article.featuredImage || article.featuredimage)?.url) {
           setImagePreview(
-            `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${article.featuredimage.url}`
+            `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${(article.featuredImage || article.featuredimage)?.url}`
           );
         }
       }
@@ -89,11 +89,11 @@ const ArticleForm = () => {
       .replace(/(^-|-$)/g, '');
   };
 
-  const handleTitleChange = (title: string) => {
+  const handleTitleChange = (titulo: string) => {
     setFormData(prev => ({
       ...prev,
-      title,
-      slug: generateSlug(title),
+      titulo,
+      slug: generateSlug(titulo),
     }));
   };
 
@@ -123,16 +123,16 @@ const ArticleForm = () => {
       }
 
       const articleData: any = {
-        title: formData.title,
+        titulo: formData.titulo,
         description: formData.description,
         slug: formData.slug,
         content: formData.content,
         publishDate: formData.publishDate,
-        status: formData.status,
+        estatus: formData.estatus,
       };
 
       if (imageId) {
-        articleData.featuredimage = imageId;
+        articleData.featuredImage = imageId;
       }
 
       if (formData.category) {
@@ -201,7 +201,7 @@ const ArticleForm = () => {
                     <Label htmlFor="title">Título *</Label>
                     <Input
                       id="title"
-                      value={formData.title}
+                      value={formData.titulo}
                       onChange={(e) => handleTitleChange(e.target.value)}
                       required
                       placeholder="Título del artículo"
@@ -266,9 +266,9 @@ const ArticleForm = () => {
                   <div className="space-y-2">
                     <Label htmlFor="status">Estado</Label>
                     <Select
-                      value={formData.status}
+                      value={formData.estatus}
                       onValueChange={(value) =>
-                        setFormData({ ...formData, status: value })
+                        setFormData({ ...formData, estatus: value })
                       }
                     >
                       <SelectTrigger>

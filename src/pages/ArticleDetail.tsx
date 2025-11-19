@@ -65,8 +65,8 @@ const ArticleDetail = () => {
     );
   }
 
-  const imageUrl = article.featuredimage?.url
-    ? `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${article.featuredimage.url}`
+  const imageUrl = (article.featuredImage || article.featuredimage)?.url
+    ? `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${(article.featuredImage || article.featuredimage)?.url}`
     : null;
 
   const publishDate = article.publishDate ? new Date(article.publishDate) : new Date(article.createdAt);
@@ -94,7 +94,7 @@ const ArticleDetail = () => {
             )}
 
             <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-              {article.title}
+              {article.titulo}
             </h1>
 
             <p className="text-xl text-muted-foreground">
@@ -138,7 +138,7 @@ const ArticleDetail = () => {
           <div className="max-w-4xl mx-auto">
             <img
               src={imageUrl}
-              alt={article.featuredimage?.alternativeText || article.title}
+              alt={(article.featuredImage || article.featuredimage)?.alternativeText || article.titulo}
               className="w-full aspect-video object-cover rounded-lg shadow-lg"
             />
           </div>

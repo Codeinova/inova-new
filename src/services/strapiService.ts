@@ -56,7 +56,7 @@ export const strapiService = {
     pageSize?: number;
   }): Promise<StrapiResponse<StrapiArticle[]>> {
     const params: any = {
-      populate: ['featuredimage', 'author', 'author.avatar', 'category'],
+      populate: ['featuredImage', 'author', 'author.avatar', 'category'],
       sort: ['publishDate:desc'],
       'pagination[page]': filters?.page || 1,
       'pagination[pageSize]': filters?.pageSize || 9,
@@ -68,7 +68,7 @@ export const strapiService = {
     }
 
     if (filters?.search) {
-      params['filters[$or][0][title][$containsi]'] = filters.search;
+      params['filters[$or][0][titulo][$containsi]'] = filters.search;
       params['filters[$or][1][description][$containsi]'] = filters.search;
     }
 
@@ -89,7 +89,7 @@ export const strapiService = {
       const response = await api.get('/articles', {
         params: {
           'filters[slug][$eq]': slug,
-          populate: ['featuredimage', 'author', 'author.avatar', 'category', 'blocks'],
+          populate: ['featuredImage', 'author', 'author.avatar', 'category', 'blocks'],
         },
       });
       return response.data.data[0] || null;
@@ -103,7 +103,7 @@ export const strapiService = {
     try {
       const response = await api.get(`/articles/${id}`, {
         params: {
-          populate: ['featuredimage', 'author', 'author.avatar', 'category', 'blocks'],
+          populate: ['featuredImage', 'author', 'author.avatar', 'category', 'blocks'],
         },
       });
       return response.data.data;

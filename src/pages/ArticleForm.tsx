@@ -32,6 +32,7 @@ const ArticleForm = () => {
     publishDate: new Date().toISOString().split('T')[0],
     estatus: 'published',
   });
+  const [currentImageId, setCurrentImageId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -65,10 +66,15 @@ const ArticleForm = () => {
           estatus: article.estatus || 'published',
         });
 
-        if ((article.featuredImage || article.featuredimage)?.url) {
+        const currentImage = article.featuredImage || article.featuredimage;
+        if (currentImage?.url) {
           setImagePreview(
-            `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${(article.featuredImage || article.featuredimage)?.url}`
+            `${import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'}${currentImage?.url}`
           );
+        }
+        // Guardar el ID de la imagen actual en el estado
+        if (currentImage?.id) {
+          setCurrentImageId(currentImage.id);
         }
       }
     } catch (error) {
@@ -131,8 +137,12 @@ const ArticleForm = () => {
         estatus: formData.estatus,
       };
 
+      // Si hay una imagen nueva, usarla. Si no, mantener la anterior
       if (imageId) {
         articleData.featuredImage = imageId;
+      } else if (id && currentImageId) {
+        // Si es actualización y no hay imagen nueva, mantener la anterior
+        articleData.featuredImage = currentImageId;
       }
 
       if (formData.category) {

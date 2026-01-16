@@ -9,7 +9,7 @@ const Index = () => {
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div className="space-y-4">
             <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-innova-yellow to-innova-yellow-light bg-clip-text text-transparent">
-              IN-OVA
+              IN OVA
             </h1>
             <p className="text-2xl md:text-3xl font-semibold text-foreground">
               Inteligencia Colectiva para el Ecosistema Digital
